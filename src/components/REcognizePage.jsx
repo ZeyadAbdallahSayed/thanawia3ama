@@ -6,11 +6,15 @@ const REcognizePage = () => {
   const [userName, setUserName] = useState("");
   const navigate = useNavigate(); // ✅ Create navigate function
 
-  const getUserName = () => {
-    console.log("User Name:", userName);
-    // Pass username as state to WelcomePage
-    navigate("/WelcomePage", { state: { userName } });
-  };
+const getUserName = () => {
+  console.log("User Name:", userName);
+
+  // ✅ Save to localStorage
+  localStorage.setItem("userName", userName);
+
+  // Navigate to WelcomePage
+  navigate("/WelcomePage", { state: { userName } });
+};
 
   return (
     <div className="relative h-screen overflow-hidden">

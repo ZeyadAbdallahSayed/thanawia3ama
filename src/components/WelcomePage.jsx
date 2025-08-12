@@ -4,30 +4,51 @@ import { useLocation, Link } from "react-router-dom";
 
 const WelcomePage = () => {
   const location = useLocation();
-  const userName = location.state?.userName || "Guest";
+
+  // ✅ Get from state first, fallback to localStorage, then "Guest"
+  const userName =
+    location.state?.userName ||
+    localStorage.getItem("userName") ||
+    "Guest";
 
   const [time, setTime] = useState(new Date());
+  const [bgLoaded, setBgLoaded] = useState(false);
 
   useEffect(() => {
     const timer = setInterval(() => setTime(new Date()), 1000);
-    return () => clearInterval(timer); // cleanup when unmounting
+    return () => clearInterval(timer);
+  }, []);
+
+  useEffect(() => {
+    const img = new Image();
+    img.src = background1;
+    img.onload = () => setBgLoaded(true);
   }, []);
 
   const dayNames = ["Sun", "Mon", "Tue", "Wed", "Thurs", "Fri", "Sat"];
   const dayName = dayNames[time.getDay()];
-  const hour = String(time.getHours()).padStart(2, "0");
+
+  // ✅ Convert to 12-hour format
+  let hour = time.getHours();
+  const ampm = hour >= 12 ? "PM" : "AM";
+  hour = hour % 12 || 12; // Convert '0' to '12'
   const minutes = String(time.getMinutes()).padStart(2, "0");
-  // const seconds = String(time.getSeconds()).padStart(2, "0");
+
+  if (!bgLoaded) {
+    return (
+      <div className="flex items-center justify-center h-screen bg-black text-white">
+        Loading...
+      </div>
+    );
+  }
 
   return (
     <div className="relative h-screen overflow-hidden">
-      {/* Background */}
       <div
         className="absolute inset-0 bg-cover bg-center z-[-1]"
         style={{ backgroundImage: `url('${background1}')` }}
       ></div>
 
-      {/* Content */}
       <div className="flex flex-col items-center justify-center gap-8 mx-auto mt-24 rounded-xl w-1/2 z-[10] p-20 bg-black/0 backdrop-blur-md shadow-lg">
         <h2 className="text-4xl text-slate-100 font-[fantasy]">
           Welcome{" "}
@@ -40,7 +61,7 @@ const WelcomePage = () => {
         <div className="flex flex-col items-center">
           <p className="text-xl font-bold text-gray-800">IT'S</p>
           <h1 className="text-[140px] font-[fantasy] text-white">
-            {hour}:{minutes}
+            {hour}:{minutes} <span className="text-5xl">{ampm}</span>
           </h1>
           <p className="text-xl font-bold text-gray-800">Time For Achieving</p>
         </div>
@@ -61,5 +82,6 @@ const WelcomePage = () => {
     </div>
   );
 };
+
 
 export default WelcomePage;
