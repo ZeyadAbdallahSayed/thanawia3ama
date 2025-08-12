@@ -83,6 +83,16 @@ const PomodoroCard = ({ workMinutes, shortBreakMinutes, longBreakMinutes }) => {
 };
 
 const MainPage = () => {
+  const [copied, setCopied] = useState(false);
+
+  const handleShare = () => {
+    const link = window.location.origin;
+    navigator.clipboard.writeText(link).then(() => {
+      setCopied(true);
+      setTimeout(() => setCopied(false), 1000);
+    });
+  };
+  
   const [time, setTime] = useState(new Date());
 
   useEffect(() => {
@@ -136,7 +146,14 @@ const MainPage = () => {
             <div className="flex flex-row items-center justify-around gap-6 p-2 rounded-2xl border-2 px-4">
               <Link to="/WelcomePage">Home</Link>
               <div><span className="border-l-4"></span></div>
-              <Link to="/">Share</Link>
+              <Link to="#">
+                <button onClick={handleShare}>Share</button>
+                {copied && (
+                  <span className="ml-4 text-green-400 font-semibold">
+                    Link copied!
+                  </span>
+                )}
+              </Link>           
               <div><span className="border-l-4"></span></div>
               <div>{dayName} {hour}:{minutes} {ampm}</div>
             </div>
@@ -169,7 +186,7 @@ const MainPage = () => {
             </div>
 
             {/* Task Planner */}
-            <div className="bg-zinc-800 h-[14rem] rounded-2xl mt-14  flex flex-col p-4 text-white w-full">
+            <div className="bg-zinc-800 h-[14rem] rounded-2xl mt-14 flex flex-col p-4 text-white w-full">
               <h1 className="mb-2">Task Planner</h1>
               <div className="flex gap-2 mb-3">
                 <input
