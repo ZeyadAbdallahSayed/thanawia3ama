@@ -12,6 +12,13 @@ module.exports = {
     extend: {
       fontFamily: {
         sport: ['Anton', 'sans-serif'],
+        fantasy: ['fantasy', 'sans-serif'], // define your font
+       keyframes: {
+      waterFlow: {
+        '0%': { backgroundPosition: '0% 0%' },
+        '100%': { backgroundPosition: '0% 100%' },
+      },
+    },
       },
     screens: {
       xs: "320px",
