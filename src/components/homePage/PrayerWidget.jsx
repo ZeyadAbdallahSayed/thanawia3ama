@@ -120,6 +120,7 @@
 // export default PrayerWidget;
 
 
+
 import React, { useEffect, useState, useRef } from "react";
 import axios from "axios";
 import adhanAudio from "./audios/extracted_audio.mp3";
@@ -131,6 +132,8 @@ const PrayerWidget = ({ onPauseApp, onResumeApp }) => {
   const [timeLeft, setTimeLeft] = useState("");
   const [showPopup, setShowPopup] = useState(false);
   const [isSunrise, setIsSunrise] = useState(false);
+    const [currentPrayer, setCurrentPrayer] = useState(null);
+
 
   const audioRef = useRef(null);
   const sunriseRef = useRef(null);
@@ -177,7 +180,11 @@ const PrayerWidget = ({ onPauseApp, onResumeApp }) => {
       const ss = String(Math.floor((diff / 1000) % 60)).padStart(2, "0");
       setTimeLeft(`${hh}:${mm}:${ss}`);
 
+
+
       if (diff <= 1000 && !showPopup) {
+          setCurrentPrayer(upcoming.name);
+
         if (upcoming.name === "Sunrise") {
           sunriseRef.current.play();
           setIsSunrise(true);
@@ -245,7 +252,7 @@ const PrayerWidget = ({ onPauseApp, onResumeApp }) => {
               </>
             ) : (
               <>
-                <h3 className="text-2xl font-bold mb-2">{nextPrayer.name}</h3>
+                <h3 className="text-2xl font-bold mb-2">{currentPrayer}</h3>
                 <h4 className="text-xl font-bold mb-2">
                   ... قوم صلي وتعالي كمل
                 </h4>
@@ -272,3 +279,6 @@ const PrayerWidget = ({ onPauseApp, onResumeApp }) => {
 };
 
 export default PrayerWidget;
+
+
+

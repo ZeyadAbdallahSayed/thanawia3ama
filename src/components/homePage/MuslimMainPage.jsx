@@ -92,7 +92,7 @@ function Navbar({ dark, onToggle }) {
  * YouTube Panel
  *************************/
 function YouTubePanel({ storedUrl, onChangeUrl, onResolved }) {
-  const [raw, setRaw] = useState(storedUrl || "");
+  const [raw, setRaw] = useState(storedUrl || "https://www.youtube.com/embed/ON7DQ9a65E8");
 
   const debounced = useDebounced(raw, 500);
   const parsed = useMemo(() => parseYouTubeUrl(debounced), [debounced]);
@@ -452,4 +452,3 @@ export default function MainPage() {
     </div>
   );
 }
-
