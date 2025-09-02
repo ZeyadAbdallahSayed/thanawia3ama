@@ -1,4 +1,3 @@
-
 import React, { useEffect, useState } from "react";
 import { background1 } from "../images";
 import { useLocation, useNavigate, Link } from "react-router-dom";
@@ -10,6 +9,7 @@ const WelcomePage = () => {
   const [userName, setUserName] = useState("");
   const [time, setTime] = useState(new Date());
   const [bgLoaded, setBgLoaded] = useState(false);
+  const [showPopup, setShowPopup] = useState(false); // حالة عرض البوب أب
 
   useEffect(() => {
     const fromState = location.state?.userName;
@@ -50,6 +50,11 @@ const WelcomePage = () => {
     navigate("/");
   };
 
+  const handlePopupChoice = (path) => {
+    setShowPopup(false); // إخفاء البوب أب
+    navigate(path); // توجيه المستخدم حسب الاختيار
+  };
+
   if (!bgLoaded) {
     return (
       <div className="flex items-center justify-center h-screen bg-black text-white">
@@ -68,7 +73,6 @@ const WelcomePage = () => {
 
       {/* Main Content */}
       <div className="flex flex-col items-center justify-center gap-8 mx-auto mt-7 sm:mt-24 p-6 sm:p-12 md:px-20 w-11/12 sm:w-3/4 md:w-1/2 bg-black/0 backdrop-blur-md rounded-xl z-[10] shadow-lg">
-        {/* Welcome Heading */}
         <h2 className="text-2xl sm:text-3xl md:text-4xl text-slate-100 font-fantasy text-center">
           Welcome{" "}
           <span className="text-4xl sm:text-5xl md:text-6xl text-slate-700 font-fantasy">
@@ -77,7 +81,6 @@ const WelcomePage = () => {
           !!
         </h2>
 
-        {/* Clock */}
         <div className="flex flex-col items-center">
           <p className="text-lg sm:text-xl md:text-xl font-fantasy text-gray-800">
             IT'S
@@ -91,7 +94,6 @@ const WelcomePage = () => {
           </p>
         </div>
 
-        {/* Day & Buttons */}
         <div className="flex flex-col items-center gap-4">
           <div className="flex flex-col sm:flex-row items-center gap-4">
             <div className="flex flex-col bg-neutral-900 p-2 justify-center items-center rounded-md text-white w-16 h-16">
@@ -100,8 +102,9 @@ const WelcomePage = () => {
             </div>
 
             <Link
-              to="/mainpage"
+              to="#"
               className="flex items-center justify-center text-lg sm:text-xl md:text-xl text-green-950 font-fantasy w-full sm:w-64 md:w-72 rounded-xl border-2 hover:bg-transparent hover:scale-105 shadow-xl transition-all duration-500 hover:shadow-xl p-4"
+            onClick={() => setShowPopup(true)}
             >
               Success Starts Here
             </Link>
@@ -115,6 +118,27 @@ const WelcomePage = () => {
           </button>
         </div>
       </div>
+
+      {/* Popup */}
+      {showPopup && (
+        <div className="fixed inset-0 bg-black/70 flex items-center justify-center z-[50]">
+          <div className="bg-white rounded-xl p-8 max-w-md w-11/12 text-center shadow-lg">
+            <h2 className="text-2xl font-bold mb-10">Are You Muslim?</h2>
+            <div className="flex justify-center gap-4">
+              <button
+                onClick={() => handlePopupChoice("/MuslimMainPage")}
+                className="bg-blue-500 text-white py-2 px-10 rounded hover:bg-blue-600 transition"
+              >
+Yes              </button>
+              <button
+                onClick={() => handlePopupChoice("/MainPage")}
+                className="bg-green-500 text-white py-2 px-10 rounded hover:bg-green-600 transition"
+              >
+No              </button>
+            </div>
+          </div>
+        </div>
+      )}
     </div>
   );
 };
