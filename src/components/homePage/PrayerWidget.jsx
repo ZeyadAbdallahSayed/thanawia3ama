@@ -182,19 +182,21 @@ const PrayerWidget = ({ onPauseApp, onResumeApp }) => {
 
 
 
-      if (diff <= 1000 && !showPopup) {
-          setCurrentPrayer(upcoming.name);
+if (diff <= 1000 && !showPopup) {
+  // هنا الصلاة اللي بدأ وقتها هو upcoming نفسه
+  setCurrentPrayer({ name: upcoming.name });
 
-        if (upcoming.name === "Sunrise") {
-          sunriseRef.current.play();
-          setIsSunrise(true);
-        } else {
-          audioRef.current.play();
-          setIsSunrise(false);
-        }
-        setShowPopup(true);
-        onPauseApp?.();
-      }
+  if (upcoming.name === "Sunrise") {
+    sunriseRef.current.play();
+    setIsSunrise(true);
+  } else {
+    audioRef.current.play();
+    setIsSunrise(false);
+  }
+  setShowPopup(true);
+  onPauseApp?.();
+}
+
     }, 1000);
 
     return () => clearInterval(timer);
@@ -252,7 +254,7 @@ const PrayerWidget = ({ onPauseApp, onResumeApp }) => {
               </>
             ) : (
               <>
-                <h3 className="text-2xl font-bold mb-2">{currentPrayer}</h3>
+                <h3 className="text-2xl font-bold mb-2">{currentPrayer.name}</h3>
                 <h4 className="text-xl font-bold mb-2">
                   ... قوم صلي وتعالي كمل
                 </h4>
